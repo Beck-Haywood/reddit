@@ -15,7 +15,6 @@ const exphbs  = require('express-handlebars');
 app.use(expressValidator());
 
 
-require('./controllers/posts.js')(app);
 
 // Set db
 require('./data/reddit-db');
@@ -26,7 +25,12 @@ require('./data/reddit-db');
 app.get('/posts/new', (req, res) => {
   res.render('posts-new')
 })
+
+require('./controllers/posts.js')(app);
+
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
 
 
 app.engine('handlebars', exphbs({defaultLayout: 'home'}));
