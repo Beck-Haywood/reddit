@@ -31,3 +31,6 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 app.engine('handlebars', exphbs({defaultLayout: 'home'}));
 app.set('view engine', 'handlebars');
+
+module.exports = app;
+
