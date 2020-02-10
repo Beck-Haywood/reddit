@@ -27,6 +27,8 @@ app.get('/posts/new', (req, res) => {
 })
 
 require('./controllers/posts.js')(app);
+require('./controllers/comments.js')(app);
+
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
