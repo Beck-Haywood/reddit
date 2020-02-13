@@ -1,8 +1,13 @@
+require('dotenv').config();
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+
+app.use(cookieParser()); // Add this after you initialize express.
 
 // Use Body Parser
 // Middleware
@@ -28,6 +33,8 @@ app.get('/posts/new', (req, res) => {
 
 require('./controllers/posts.js')(app);
 require('./controllers/comments.js')(app);
+require('./controllers/auth.js')(app);
+
 
 
 
