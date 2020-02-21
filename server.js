@@ -1,20 +1,23 @@
+//REQUIRE LIBRARIES
 require('dotenv').config();
-var cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
 const express = require('express');
+
+//DEFINE APP
 const app = express();
-const port = 3000;
+
+app.use(express.static('public'))
+
+//Set database
+require('./data/reddit-db');
+
+//Middleware--------------------------------
+const exphbs  = require('express-handlebars');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 
-app.use(cookieParser()); // Add this after you initialize express.
-
-// Use Body Parser
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-//CheckAuth
-var checkAuth = (req, res, next) => {
+const checkAuth = (req, res, next) => {
   console.log("Checking authentication");
   if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
     req.user = null;
@@ -23,41 +26,38 @@ var checkAuth = (req, res, next) => {
     var decodedToken = jwt.decode(token, { complete: true }) || {};
     req.user = decodedToken.payload;
   }
-
   next();
 };
-app.use(checkAuth);
 
-const exphbs  = require('express-handlebars');
+app.use(cookieParser()); // Add this after you initialize express.
+
+//Handlebars
+app.engine('handlebars', exphbs({defaultLayout: 'home'}));
+app.set('view engine', 'handlebars');
+
+// Use Body Parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add after body parser initialization!
 app.use(expressValidator());
 
-
-
-// Set db
-require('./data/reddit-db');
+// Add after express init
+app.use(checkAuth);
 
 // Routes
-
-
 app.get('/posts/new', (req, res) => {
-  res.render('posts-new')
+  //Render the post view
+  res.render('posts-new');
 })
 
+//Controllers
 require('./controllers/posts.js')(app);
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
 
-
-
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-
-
-app.engine('handlebars', exphbs({defaultLayout: 'home'}));
-app.set('view engine', 'handlebars');
+app.listen(3000, () => {
+  console.log('Reddit clone on port localhost:3000!');
+});
 
 module.exports = app;
-

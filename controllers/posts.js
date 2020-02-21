@@ -1,7 +1,29 @@
 const Post = require('../models/post');
-const User = require('../models/user')
+const User = require('../models/user');
 
 module.exports = app => {
+    app.post("/posts/new", (req, res) => {
+        const post = new Post(req.body);
+
+        post.save((err, post) => {
+            return res.redirect(`/`);
+        })
+    });
+
+    // INDEX
+    app.get('/', (req, res) => {
+        var currentUser = req.user;
+        // res.render('home', {});
+        console.log(req.cookies);
+        Post.find().populate('author')
+        .then(posts => {
+            res.render('posts-index', { posts, currentUser });
+            // res.render('home', {});
+        }).catch(err => {
+            console.log(err.message);
+        })
+    });
+
     // CREATE
     app.post("/posts/new", (req, res) => {
         if (req.user) {
@@ -26,24 +48,11 @@ module.exports = app => {
             return res.status(401); // UNAUTHORIZED
         }
     });
-    // INDEX
-    app.get('/', (req, res) => {
-        var currentUser = req.user;
-        // res.render('home', {});
-        console.log(req.cookies);
-        Post.find().populate('author')
-        .then(posts => {
-            res.render('posts-index', { posts, currentUser });
-            // res.render('home', {});
-        }).catch(err => {
-            console.log(err.message);
-        })
-    })
+
+    // SHOW
     app.get("/posts/:id", function (req, res) {
         var currentUser = req.user;
-        // LOOK UP THE POST
-
-        Post.findById(req.params.id).populate('comments').populate('author')
+        Post.findById(req.params.id).populate('comments').lean()
             .then(post => {
                 res.render("posts-show", { post, currentUser });  
             })
@@ -51,10 +60,11 @@ module.exports = app => {
                 console.log(err.message);
             });
     });
+
     // SUBREDDIT
     app.get("/n/:subreddit", function (req, res) {
         var currentUser = req.user;
-        Post.find({ subreddit: req.params.subreddit }).populate('author')
+        Post.find({ subreddit: req.params.subreddit }).lean()
             .then(posts => {
                 res.render("posts-index", { posts, currentUser });
             })
@@ -62,5 +72,4 @@ module.exports = app => {
                 console.log(err);
             });
     });
-};
-
+}
