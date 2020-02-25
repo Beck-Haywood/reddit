@@ -48,7 +48,7 @@ app.use(checkAuth);
 // Routes
 app.get('/posts/new', (req, res) => {
   //Render the post view
-  res.render('posts-new');
+  res.render('posts-new', { currentUser: req.user });
 })
 
 //Controllers

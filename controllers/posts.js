@@ -2,15 +2,7 @@ const Post = require('../models/post');
 const User = require('../models/user');
 
 module.exports = app => {
-    app.post("/posts/new", (req, res) => {
-        const post = new Post(req.body);
-
-        post.save((err, post) => {
-            console.log(err)
-            return res.redirect(`/`);
-        })
-    });
-
+    
     // INDEX
     app.get('/', (req, res) => {
         var currentUser = req.user;
