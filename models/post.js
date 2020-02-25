@@ -6,7 +6,7 @@ const PostSchema = new Schema({
   title: { type: String, required: true },
   url: { type: String, required: true },
   summary: { type: String, required: true },
-  author : { type: Schema.Types.ObjectId, ref: "User", required: true },
+  author : { type: Schema.Types.ObjectId, ref: "User" }, //took out required author
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 
@@ -14,5 +14,7 @@ const PostSchema = new Schema({
 PostSchema
     .pre('findOne', Populate('author'))
     .pre('find', Populate('author'))
+    
+// Post = mongoose.model("Post", PostSchema);
 
 module.exports = mongoose.model("Post", PostSchema);

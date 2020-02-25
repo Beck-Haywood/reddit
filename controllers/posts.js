@@ -6,6 +6,7 @@ module.exports = app => {
         const post = new Post(req.body);
 
         post.save((err, post) => {
+            console.log(err)
             return res.redirect(`/`);
         })
     });
