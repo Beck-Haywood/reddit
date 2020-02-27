@@ -13,4 +13,10 @@ CommentSchema
     .pre('findOne', Populate('author'))
     .pre('find', Populate('author'))
 
+    .pre('find', Populate('comments'))
+    .pre('findOne', Populate('comments'))
+
+
+
+
 module.exports = mongoose.model("Comment", CommentSchema);

@@ -4,10 +4,12 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const expect = chai.expect;
 
+
 // Import the Post model from our models folder so we
 // we can use it in our tests.
 const Post = require('../models/post');
 const server = require('../server');
+const User = require('../models/user')
 //const agent = chai.request.agent(app);
 
 chai.should();

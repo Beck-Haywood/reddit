@@ -6,13 +6,14 @@ module.exports = app => {
     // NEW REPLY
     app.get("/posts/:postId/comments/:commentId/replies/new", (req, res) => {
         let post;
+        var currentUser = req.user;
         Post.findById(req.params.postId)
         .then(p => {
             post = p;
             return Comment.findById(req.params.commentId);
         })
         .then(comment => {
-            res.render("replies-new", { post, comment });
+            res.render("replies-new", { post, comment, currentUser });
         })
         .catch(err => {
             console.log(err.message);
@@ -20,6 +21,8 @@ module.exports = app => {
     });
     // CREATE REPLY
     app.post("/posts/:postId/comments/:commentId/replies", (req, res) => {
+        console.log(req.body)
+
         // TURN REPLY INTO A COMMENT OBJECT
         const reply = new Comment(req.body);
         reply.author = req.user._id
