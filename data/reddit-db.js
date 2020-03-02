@@ -1,4 +1,5 @@
 /* Mongoose Connection */
+require('dotenv').config();
 const mongoose = require("mongoose");
 assert = require("assert");
 
