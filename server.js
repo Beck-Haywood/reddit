@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.static('public'))
 
+
 //Set database
 require('./data/reddit-db');
 
