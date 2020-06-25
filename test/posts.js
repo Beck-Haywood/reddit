@@ -30,7 +30,7 @@ describe('Posts', function() {
     before(function (done) {
         agent
           .post('/sign-up')
-          .set("content-type", "application/x-www-form-urlencoded")
+        //   .set("content-type", "application/x-www-form-urlencoded")
           .send(user)
           .then(function (res) {
             done();

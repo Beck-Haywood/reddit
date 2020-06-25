@@ -1,0 +1,37 @@
+  version: '3.7'
+
+  services:
+    web:
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      # command: npm start 0.0.0.0:3000
+      image: nodejs
+      restart: unless-stopped
+      container_name: nodejs
+      env_file: .env
+      volumes:
+        - .:/app
+      ports:
+        - "3000:3000"
+      links:
+        - mongo
+      depends_on: 
+        - mongo
+      # networks:
+      #   - app-network
+      command: ./app/wait-for.sh mongo:27017 -- npm start 0.0.0.0:3000
+    mongo:
+      container_name: mongo
+      image: mongo
+      restart: unless-stopped
+      env_file: .env
+      ports:
+        - '27017:27017'
+      # environment:
+      #   - MONGO_INITDB_DATABASE=reddit-js
+  #     networks:
+  #       - app-network
+  # networks:
+  #   app-network:
+  #     driver: bridge

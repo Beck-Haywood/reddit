@@ -1,7 +1,7 @@
 //REQUIRE LIBRARIES
 require('dotenv').config();
 const express = require('express');
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 //DEFINE APP
 const app = express();
@@ -60,8 +60,8 @@ require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
 require('./controllers/replies.js')(app);
 
-app.listen(port, () => {
-  console.log('Reddit clone on port localhost:3000!');
+app.listen(port, function () {
+  console.log(`Example app listening on ${port}!`);
 });
 
 module.exports = app;
