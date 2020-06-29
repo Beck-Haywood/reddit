@@ -7,6 +7,8 @@ jobs:
       name: node/default
     steps:
       - checkout
+    environment:
+      TZ: "America/Anchorage"
       - node/with-cache:
           steps:
             - run: npm install
@@ -15,3 +17,4 @@ workflows:
     build-and-test:
       jobs:
         - build-and-test
+
